@@ -32,6 +32,31 @@ def draw_grid(positions):
     for col in range(GRID_WIDTH):
         pygame.draw.line(screen, BLACK, (col * TILE_SIZE, 0), (col * TILE_SIZE, HEIGHT))
 
+def adjust_grid(positions):
+    all_neighbours = set()
+    new_positions = set()
+
+    for position in positions:
+        neighbours = get_neighbours(position)
+        all_neighbours.update(neighbours)
+
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Annonymous function
+
+        if len(neighbours) in [2, 3]:
+            new_positions.add(position)
+
+    for position in all_neighbours:
+        neighbours = get_neighbours(position)
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Annonymous function
+
+        if len(neighbours) == 3:
+            new_positions.add(position)
+
+    return new_positions
+
+def get_neighbours(pos):
+    pass
+
 def main():
     running = True
     playing = False
