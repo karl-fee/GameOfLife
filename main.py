@@ -4,8 +4,8 @@ import random
 pygame.init()
 
 BLACK = (0, 0, 0)
-GREY = (128, 128, 128)
-YELLOW = (255, 255, 0)
+GREY = (64, 64, 64)
+GREEN = (0, 255, 127)
 
 WIDTH, HEIGHT = 800, 800
 TILE_SIZE = 20
@@ -24,7 +24,7 @@ def draw_grid(positions):
     for position in positions:
         col, row = position
         top_left = (col * TILE_SIZE, row * TILE_SIZE)
-        pygame.draw.rect(screen, YELLOW, (*top_left, TILE_SIZE, TILE_SIZE))
+        pygame.draw.rect(screen, GREEN, (*top_left, TILE_SIZE, TILE_SIZE))
 
     for row in range(GRID_HEIGHT):
         pygame.draw.line(screen, BLACK, (0, row * TILE_SIZE), (WIDTH, row * TILE_SIZE))
@@ -55,16 +55,40 @@ def adjust_grid(positions):
     return new_positions
 
 def get_neighbours(pos):
-    pass
+    x, y = pos
+    neighbours =[]
+    for dx in [-1, 0, 1]:
+        if x + dx < 0 or x + dx > GRID_WIDTH:
+            continue
+        for dy in [-1, 0, 1]:
+            if y + dy < 0 or y + dy > GRID_HEIGHT:
+                continue
+            if dx == 0 and dy == 0:
+                continue
+
+            neighbours.append((x + dx, y + dy ))
+
+    return neighbours
 
 def main():
     running = True
     playing = False
+    count = 0
+    game_speed = 60 # update_freq
 
     positions = set()
     positions.add((10, 10))
     while running:
         clock.tick(FPS)
+
+        if playing:
+            count += 1
+
+        if count >= game_speed:
+            count = 0
+            positions = adjust_grid(positions)
+
+        pygame.display.set_caption("PLAYING (Spacebar = Play/Pause, Click = Add/Remove Cells, G = Generate Random Cells, C = Clear Cells)" if playing else "PAUSED (Spacebar = Play/Pause, Click = Add/Remove Cells, G = Generate Random Cells, C = Clear Cells)")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,6 +112,7 @@ def main():
                 if event.key == pygame.K_c:
                     positions = set()
                     playing = False
+                    count = 0
 
                 if event.key == pygame.K_g:
                     positions = gen(random.randrange(2,5) * GRID_WIDTH)
