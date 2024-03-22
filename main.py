@@ -40,14 +40,14 @@ def adjust_grid(positions):
         neighbours = get_neighbours(position)
         all_neighbours.update(neighbours)
 
-        neighbours = list(filter(lambda x: x in positions, neighbours)) # Annonymous function
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous function
 
         if len(neighbours) in [2, 3]:
             new_positions.add(position)
 
     for position in all_neighbours:
         neighbours = get_neighbours(position)
-        neighbours = list(filter(lambda x: x in positions, neighbours)) # Annonymous function
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous function
 
         if len(neighbours) == 3:
             new_positions.add(position)
@@ -74,7 +74,7 @@ def main():
     running = True
     playing = False
     count = 0
-    game_speed = 60 # update_freq
+    game_speed = 60 # update_freq (lower is faster)
 
     positions = set()
     positions.add((10, 10))
@@ -115,7 +115,7 @@ def main():
                     count = 0
 
                 if event.key == pygame.K_g:
-                    positions = gen(random.randrange(2,5) * GRID_WIDTH)
+                    positions = gen(random.randrange(2,9) * GRID_WIDTH)
 
         screen.fill(GREY)
         draw_grid(positions)
