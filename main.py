@@ -40,14 +40,14 @@ def adjust_grid(positions):
         neighbours = get_neighbours(position)
         all_neighbours.update(neighbours)
 
-        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous function
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous/Lamda function
 
         if len(neighbours) in [2, 3]:
             new_positions.add(position)
 
     for position in all_neighbours:
         neighbours = get_neighbours(position)
-        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous function
+        neighbours = list(filter(lambda x: x in positions, neighbours)) # Anonymous/Lamda function
 
         if len(neighbours) == 3:
             new_positions.add(position)
